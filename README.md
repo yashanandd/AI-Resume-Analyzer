@@ -1,34 +1,79 @@
-# Nexus AI - Resume Analyzer
+# AI Resume Analyzer
 
-Nexus AI is a modern, full-stack AI Resume Analyzer. Built for AI/ML engineers and technical recruiters, it parses uploaded resumes, evaluates their ATS score against specific job roles, extracts skills, and uses OpenAI to provide actionable feedback.
+AI Resume Analyzer is a full-stack AI-powered application that analyzes uploaded resumes, evaluates ATS compatibility, extracts technical skills, and generates intelligent improvement suggestions using NLP and OpenAI API integration.
 
-## Tech Stack
-- **Frontend**: React (Vite), TypeScript, Tailwind CSS, Framer Motion
-- **Backend**: FastAPI (Python), SQLAlchemy, SQLite (Development) / PostgreSQL (Production)
-- **AI Integration**: OpenAI (`gpt-3.5-turbo`)
-- **Document Parsing**: `pdfplumber`, `python-docx`
+---
 
-## Directory Structure
-- `/frontend`: Vite + React frontend application
-- `/backend`: FastAPI backend application
+# 🚀 Features
 
-## Prerequisites
+- Resume PDF upload
+- ATS score analysis
+- Technical skill extraction
+- AI-generated resume suggestions
+- Job-role matching
+- REST API integration
+- Responsive modern UI
+- Resume keyword analysis
+- Interactive analytics dashboard
+
+---
+
+# 🛠️ Tech Stack
+
+## **Frontend**
+- React (Vite)
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+
+## **Backend**
+- FastAPI (Python)
+- SQLAlchemy
+- SQLite
+
+## **AI Integration**
+- OpenAI API
+- NLP Techniques
+- Prompt Engineering
+
+## **Tools**
+- Git
+- GitHub
+- Postman
+
+---
+
+# 📂 Directory Structure
+
+```bash
+frontend/
+backend/
+screenshots/
+README.md
+```
+
+---
+
+# ⚙️ Prerequisites
+
 - Node.js (v18+)
 - Python (v3.10+)
 - OpenAI API Key
 
 ---
 
-## 🚀 Running the Project Locally
+# 🚀 Running the Project Locally
 
-### 1. Backend Setup
+# 1️⃣ Backend Setup
 
 Open a terminal and navigate to the backend directory:
+
 ```bash
 cd backend
 ```
 
 Create and activate a virtual environment:
+
 ```bash
 # Windows
 python -m venv venv
@@ -40,53 +85,97 @@ source venv/bin/activate
 ```
 
 Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the `backend` directory:
+Create a `.env` file inside the backend directory:
+
 ```env
-SECRET_KEY=your_super_secret_key_here
-OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_API_KEY=your_api_key
+SECRET_KEY=your_secret_key
 ```
 
 Run the FastAPI server:
+
 ```bash
 uvicorn main:app --reload
 ```
-The backend API will be available at: http://localhost:8000
+
+The backend API will be available at:
+
+```text
+http://localhost:8000
+```
 
 ---
 
-### 2. Frontend Setup
+# 2️⃣ Frontend Setup
 
 Open a new terminal and navigate to the frontend directory:
+
 ```bash
 cd frontend
 ```
 
 Install dependencies:
+
 ```bash
 npm install
 ```
 
 Start the development server:
+
 ```bash
 npm run dev
 ```
-The frontend will be available at: http://localhost:5173
+
+The frontend will be available at:
+
+```text
+http://localhost:5173
+```
 
 ---
 
-## 📦 Deployment Instructions
+# 📦 Deployment
 
-### Backend (Render / Heroku)
-1. Set the Database to **PostgreSQL** by updating the `SQLALCHEMY_DATABASE_URI` in `backend/core/config.py` using an environment variable in production.
-2. Define the start command as: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-3. Add `SECRET_KEY` and `OPENAI_API_KEY` to the environment variables on the hosting platform.
+## **Frontend**
+- Deploy using Vercel or Netlify
 
-### Frontend (Vercel / Netlify)
-1. Connect your repository to Vercel/Netlify.
-2. Set the build command to: `npm run build`
-3. Set the output directory to: `dist`
-4. Make sure to update the backend API URL in the frontend (if deployed).
+## **Backend**
+- Deploy using Render or Railway
+
+## **Environment Variables**
+
+```env
+OPENAI_API_KEY=your_api_key
+SECRET_KEY=your_secret_key
+```
+
+---
+
+# 📸 Screenshots
+
+Add screenshots of:
+- Home Page
+- Resume Upload Section
+- ATS Score Dashboard
+- AI Suggestions Panel
+
+---
+
+# 🔮 Future Improvements
+
+- Multi-role ATS analysis
+- Resume template recommendations
+- AI interview preparation suggestions
+- Authentication system
+- Resume history tracking
+
+---
+
+# 👨‍💻 Author
+
+**Yash Anand**
