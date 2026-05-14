@@ -9,3 +9,7 @@ __pycache__
 .vscode
 coverage
 .cache
+*.db
+tmp*
+test*
+__pycache__
