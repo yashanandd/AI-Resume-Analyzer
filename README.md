@@ -141,11 +141,11 @@ http://localhost:5173
 
 # 📦 Deployment
 
-## **Frontend**
-- Deploy using Vercel or Netlify
+## 🌐 Live Demo
 
-## **Backend**
-- Deploy using Render or Railway
+Frontend: https://vercel.com/yashanandds-projects/ai-resume-analyzer
+
+Backend API: https://ai-resume-analyzer-backend-i4ac.onrender.com
 
 ## **Environment Variables**
 
