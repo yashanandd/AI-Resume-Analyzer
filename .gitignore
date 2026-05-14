@@ -3,13 +3,8 @@ dist
 build
 .env
 __pycache__
-.venv
-*.log
-.DS_Store
-.vscode
-coverage
-.cache
 *.db
-tmp*
-test*
-__pycache__
+*.log
+venv
+.cache
+.vscode
