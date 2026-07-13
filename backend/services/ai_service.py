@@ -9,7 +9,7 @@ try:
 except ImportError:
     import google.generativeai as genai
     genai.configure(api_key=settings.GEMINI_API_KEY)
-    model = genai.GenerativeModel("models/gemini-2.5-flash")
+    model = genai.GenerativeModel("models/gemini-2.0-flash")
     HAS_NEW_SDK = False
 
 
@@ -37,10 +37,12 @@ def analyze_resume(resume_text: str, job_role: str) -> dict:
     prompt = f"""
     You are an expert ATS Resume Analyzer.
     
-    [IMPORTANT TEMPORAL CONTEXT]
-    Today's current date is: {current_date_str}.
-    Evaluate all dates, timelines, and experiences in the resume relative to this current date. 
-    For example, any experiences or internships in 2025 or early 2026 are completed past experiences, not future or upcoming ones. Do not flag them as being in the future.
+    [CRITICAL TEMPORAL ALIGNMENT]
+    - The current date is exactly {current_date_str}.
+    - Any date, internship, or project matching 2024, 2025, or early 2026 (including Jan '25, Feb '25, Feb '26, Apr '26) is in the PAST.
+    - Do NOT write suggestions stating that these dates are in the future or that they imply upcoming/planned work. They are fully completed.
+    - Only flag a date as in the future if it is strictly after {current_date_str}.
+    - Ensure your suggestions reflect this past completion context.
 
     Analyze this resume for the role: {job_role}
 
@@ -58,20 +60,26 @@ def analyze_resume(resume_text: str, job_role: str) -> dict:
     """
 
     try:
+        print(f"\n--- DEBUG: GENERATING ATS SCORE FOR '{job_role}' ---")
+        print(f"System Reference Date: {current_date_str}")
+
         if HAS_NEW_SDK:
             response = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-2.0-flash",
                 contents=prompt
             )
         else:
             response = model.generate_content(prompt)
 
         text = response.text.strip()
+        print(f"Raw Gemini API Output:\n{text}\n")
 
         if text.startswith("```json"):
             text = text.replace("```json", "").replace("```", "").strip()
 
-        return json.loads(text)
+        parsed_data = json.loads(text)
+        print("Successfully parsed structured JSON response.")
+        return parsed_data
 
     except Exception as e:
         print(f"Gemini API Error: {e}")
