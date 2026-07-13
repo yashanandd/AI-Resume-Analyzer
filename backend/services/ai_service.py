@@ -1,10 +1,15 @@
 import json
-import google.generativeai as genai
 from core.config import settings
 
-genai.configure(api_key=settings.GEMINI_API_KEY)
-
-model = genai.GenerativeModel("models/gemini-2.5-flash")
+try:
+    from google import genai
+    client = genai.Client(api_key=settings.GEMINI_API_KEY)
+    HAS_NEW_SDK = True
+except ImportError:
+    import google.generativeai as genai
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
+    HAS_NEW_SDK = False
 
 
 def analyze_resume(resume_text: str, job_role: str) -> dict:
@@ -45,7 +50,13 @@ def analyze_resume(resume_text: str, job_role: str) -> dict:
     """
 
     try:
-        response = model.generate_content(prompt)
+        if HAS_NEW_SDK:
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
+            )
+        else:
+            response = model.generate_content(prompt)
 
         text = response.text.strip()
 
