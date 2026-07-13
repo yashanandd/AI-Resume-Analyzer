@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from core.config import settings
 
 try:
@@ -31,8 +32,15 @@ def analyze_resume(resume_text: str, job_role: str) -> dict:
         ]
     }
 
+    current_date_str = datetime.utcnow().strftime("%B %Y")  # e.g., "July 2026"
+
     prompt = f"""
     You are an expert ATS Resume Analyzer.
+    
+    [IMPORTANT TEMPORAL CONTEXT]
+    Today's current date is: {current_date_str}.
+    Evaluate all dates, timelines, and experiences in the resume relative to this current date. 
+    For example, any experiences or internships in 2025 or early 2026 are completed past experiences, not future or upcoming ones. Do not flag them as being in the future.
 
     Analyze this resume for the role: {job_role}
 
