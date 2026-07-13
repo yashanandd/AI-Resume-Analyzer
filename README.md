@@ -198,18 +198,19 @@ graph TD
 
 ---
 
-## 📸 Screenshots
+## 📸 Application Screenshots
 
-*Add screenshots showing application flows:*
+#### **1. Landing Page Console**
+![Landing Page](./screenshots/landing.png)
 
-#### **1. Authentication Gate**
-`[Insert Authentication Gate Screen Screenshot Here]`
+#### **2. Authentication Gate**
+![Authentication Gate](./screenshots/auth.png)
 
-#### **2. Dashboard Console**
-`[Insert Dashboard Console Screen Screenshot Here]`
+#### **3. Dashboard Overview**
+![Dashboard Overview](./screenshots/dashboard.png)
 
-#### **3. ATS Score & Generative Feedback Panel**
-`[Insert Analysis Feedback Screen Screenshot Here]`
+#### **4. ATS Score & Generative Feedback Panel**
+![ATS Score & Generative Feedback Panel](./screenshots/analysis.png)
 
 ---
 
