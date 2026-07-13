@@ -67,10 +67,10 @@ def analyze_resume(resume_text: str, job_role: str) -> dict:
         print(f"\n--- DEBUG: GENERATING ATS SCORE FOR '{job_role}' VIA GROQ ---")
         print(f"System Reference Date: {current_date_str}")
 
-        # Primary Model: llama-3.1-70b-versatile
+        # Primary Model: llama-3.3-70b-versatile
         try:
             completion = client.chat.completions.create(
-                model="llama-3.1-70b-versatile",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
