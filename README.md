@@ -191,10 +191,10 @@ graph TD
 ## 📦 Deployment
 
 ### **Frontend**
-- **Hosting URL**: [Insert Frontend Deployment URL Here] (e.g. Vercel / Netlify)
+- **Hosting URL**: [https://ai-resume-analyzer-five-bay.vercel.app/](https://ai-resume-analyzer-five-bay.vercel.app/)
 
 ### **Backend**
-- **API URL**: [Insert Backend Live URL Here] (e.g. Railway / Render)
+- **API URL**: [https://ai-resume-analyzer-backend-i4ac.onrender.com](https://ai-resume-analyzer-backend-i4ac.onrender.com)
 
 ---
 
