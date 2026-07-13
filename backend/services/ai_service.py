@@ -64,12 +64,24 @@ def analyze_resume(resume_text: str, job_role: str) -> dict:
         print(f"System Reference Date: {current_date_str}")
 
         if HAS_NEW_SDK:
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt
-            )
+            try:
+                response = client.models.generate_content(
+                    model="gemini-2.0-flash",
+                    contents=prompt
+                )
+            except Exception as e:
+                print(f"Primary gemini-2.0-flash failed: {e}. Falling back to gemini-1.5-flash...")
+                response = client.models.generate_content(
+                    model="gemini-1.5-flash",
+                    contents=prompt
+                )
         else:
-            response = model.generate_content(prompt)
+            try:
+                response = model.generate_content(prompt)
+            except Exception as e:
+                print(f"Primary legacy model failed: {e}. Falling back to models/gemini-1.5-flash...")
+                legacy_fallback_model = genai.GenerativeModel("models/gemini-1.5-flash")
+                response = legacy_fallback_model.generate_content(prompt)
 
         text = response.text.strip()
         print(f"Raw Gemini API Output:\n{text}\n")
