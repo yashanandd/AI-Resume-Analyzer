@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const isLocalhost = typeof window !== 'undefined' && 
+const isLocalhost = typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
-const DEFAULT_API_URL = isLocalhost 
-  ? "http://localhost:8000/api/v1" 
-  : "https://ai-resume-analyzer-backend-i4ac.onrender.com/api/v1";
+const DEFAULT_API_URL = isLocalhost
+  ? "http://localhost:8000/api/v1"
+  : "https://ai-resume-analyzer-backend-i4ac.onrender.com/";
 
 const API_URL = (import.meta.env.VITE_API_URL as string) || DEFAULT_API_URL;
 
