@@ -4,10 +4,10 @@
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
-[![Gemini](https://img.shields.io/badge/Google_Gemini-8E75C2?style=for-the-badge&logo=google-gemini&logoColor=white)](https://ai.google.dev/)
+[![Groq](https://img.shields.io/badge/Groq-f55a42?style=for-the-badge&logo=groq&logoColor=white)](https://groq.com/)
 [![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
 
-Nexus AI is a premium, full-stack AI-powered application that evaluates resume PDFs against ATS compatibility metrics, analyzes technical skill coverage, and renders Generative AI feedback suggestions using Google Gemini LLM and Python NLP integrations.
+Nexus AI is a premium, full-stack AI-powered application that evaluates resume PDFs against ATS compatibility metrics, analyzes technical skill coverage, and renders Generative AI feedback suggestions using Groq Llama 3 LLM and Python NLP integrations.
 
 ---
 
@@ -33,7 +33,7 @@ graph TD
     A[Upload Resume PDF] --> B[FastAPI Document Service]
     B --> C[Extract Text Content]
     C --> D[Construct Strict JSON Schema Prompt]
-    D --> E[Gemini Pro API Call]
+    D --> E[Groq Llama 3 API Call]
     E --> F[Parse Structured JSON Output]
     F --> G[Extract ATS Score %]
     F --> H[Extract Identified Core Skills]
@@ -58,7 +58,7 @@ graph TD
 ### **Resume Analysis Core (`/api/v1/resumes`)**
 | HTTP Method | Route | Payload Schema | Auth Required | Description |
 |:---:|---|---|:---:|---|
-| `POST` | `/` | `Multipart/Form-Data` + `job_role` | Yes | Upload and parse new PDF vector via Gemini |
+| `POST` | `/` | `Multipart/Form-Data` + `job_role` | Yes | Upload and parse new PDF vector via Groq Llama 3 |
 | `GET` | `/` | None | Yes | Query list logs of all historical parsed records |
 | `GET` | `/{resume_id}` | None | Yes | Inspect specific resume ATS suggestions & parameters |
 | `DELETE` | `/{resume_id}` | None | Yes | Purge a resume record from database storage |
@@ -82,7 +82,7 @@ graph TD
 - **bcrypt** (Salted Password Hashing module)
 
 ### **AI Integration**
-- **Gemini Pro API** (LLM content generation interface)
+- **Groq Cloud API** (Llama 3 inference engine)
 - **NLP / Prompt Engineering** (Strict JSON Output constraints)
 
 ---
@@ -118,7 +118,7 @@ graph TD
 
 - **Node.js** (v18+)
 - **Python** (v3.10+)
-- **Gemini API Key** (Accessible from Google AI Studio)
+- **Groq API Key** (Accessible from Groq Console)
 
 ---
 
@@ -149,8 +149,8 @@ graph TD
 
 4. Create a `.env` file in the `backend/` directory:
    ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   SECRET_KEY=generate_a_secure_jwt_secret_here
+    GROQ_API_KEY=your_groq_api_key_here
+    SECRET_KEY=generate_a_secure_jwt_secret_here
    
    # Optional SMTP credentials for email OTP dispatch (falls back to console stdout logs if left blank)
    SMTP_HOST=

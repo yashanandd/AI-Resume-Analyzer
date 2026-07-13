@@ -11,8 +11,8 @@ class Settings(BaseSettings):
     # Database
     SQLALCHEMY_DATABASE_URI: str = "sqlite:///./nexus_ai.db"
     
-    # OpenAI
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    # Groq Settings
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
 
     # SMTP Settings
     SMTP_HOST: str = os.getenv("SMTP_HOST", "")
