@@ -37,7 +37,7 @@ export const AnalysisResult = () => {
     }
   }, [currentResume, navigate]);
 
-  if (!data) return <div className="min-h-screen flex items-center justify-center text-white font-mono">Initializing Analysis Data...</div>;
+  if (!data) return <div className="min-h-screen flex items-center justify-center text-white">Loading analysis data...</div>;
 
   return (
     <div className="min-h-screen p-8 relative overflow-hidden bg-background">
@@ -55,20 +55,20 @@ export const AnalysisResult = () => {
             </button>
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-primary font-mono text-sm">&gt; result_computed</span>
+                <span className="text-primary text-sm font-semibold">Analysis Complete</span>
                 <span className="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
               </div>
-              <h1 className="text-3xl font-bold font-mono text-white">Analysis Output</h1>
-              <p className="text-textMuted font-mono text-sm mt-1">File: {currentResume?.filename}</p>
+              <h1 className="text-3xl font-bold text-white">Resume Analysis Report</h1>
+              <p className="text-textMuted text-sm mt-1">File: {currentResume?.filename}</p>
             </div>
           </div>
           <button 
             onClick={() => window.print()}
-            className="sm:self-end px-4 py-2 rounded bg-surface border border-white/10 hover:border-primary/50 text-textMuted hover:text-white flex items-center justify-center gap-2 text-xs font-mono transition-all print:hidden"
-            title="Print Vector Report"
+            className="sm:self-end px-4 py-2 rounded bg-surface border border-white/10 hover:border-primary/50 text-textMuted hover:text-white flex items-center justify-center gap-2 text-xs transition-all print:hidden"
+            title="Print Report"
           >
             <Printer className="w-4 h-4" />
-            <span>[ PRINT_REPORT ]</span>
+            <span>Print Report</span>
           </button>
         </header>
 
@@ -76,10 +76,10 @@ export const AnalysisResult = () => {
           {/* Left Column - Score & Skills */}
           <div className="space-y-8 lg:col-span-1">
             <Card className="glass-panel text-center flex flex-col items-center p-8">
-              <h3 className="text-lg font-mono text-textMuted mb-6 text-left w-full">ATS Compatibility</h3>
+              <h3 className="text-lg font-semibold text-textMuted mb-6 text-left w-full">ATS Score</h3>
               <ATSScoreRing score={data.score} />
               <p className="mt-6 text-sm text-textMuted max-w-[200px]">
-                Your profile vector has been analyzed against industry standards.
+                Your resume content and structure have been analyzed against ATS parsing standards.
               </p>
             </Card>
 
@@ -87,13 +87,13 @@ export const AnalysisResult = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-secondary" />
-                  Extracted Features
+                  Matched Skills
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {data.skills.map((skill, i) => (
-                    <span key={i} className="px-3 py-1 bg-surface border border-white/10 rounded-full text-xs font-mono text-white">
+                    <span key={i} className="px-3 py-1 bg-surface border border-white/10 rounded-full text-xs text-white">
                       {skill}
                     </span>
                   ))}
@@ -110,13 +110,13 @@ export const AnalysisResult = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-danger">
                   <AlertTriangle className="w-5 h-5" />
-                  Missing Parameters (Keywords)
+                  Missing Keywords
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {data.missingKeywords.map((kw, i) => (
-                    <span key={i} className="px-3 py-1 bg-danger/10 border border-danger/20 text-danger rounded-md text-sm font-mono">
+                    <span key={i} className="px-3 py-1 bg-danger/10 border border-danger/20 text-danger rounded-md text-sm">
                       + {kw}
                     </span>
                   ))}
@@ -130,7 +130,7 @@ export const AnalysisResult = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-primary">
                   <Lightbulb className="w-5 h-5" />
-                  Optimization Suggestions
+                  Actionable Suggestions
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -144,7 +144,7 @@ export const AnalysisResult = () => {
                       className="flex items-start gap-3 bg-surface/50 p-4 rounded-lg border border-primary/10"
                     >
                       <Target className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-white/90 leading-relaxed font-mono">{suggestion}</p>
+                      <p className="text-sm text-white/90 leading-relaxed">{suggestion}</p>
                     </motion.li>
                   ))}
                   {data.suggestions.length === 0 && <span className="text-textMuted text-sm italic">No specific suggestions provided.</span>}

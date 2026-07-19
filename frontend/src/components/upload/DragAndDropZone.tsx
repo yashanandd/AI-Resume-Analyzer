@@ -137,7 +137,7 @@ export const DragAndDropZone = () => {
     <div className="w-full max-w-2xl mx-auto mt-8">
       <div className="mb-6 space-y-2 relative">
         <Label htmlFor="jobRole" className="text-white">
-          Target Job Role Vector
+          Target Job Role
         </Label>
 
         <Input
@@ -214,15 +214,15 @@ export const DragAndDropZone = () => {
 
             <div>
               <p className="text-lg font-medium text-white mb-1">
-                Drop your resume vector here
+                Drop your resume file here
               </p>
-              <p className="text-sm text-textMuted font-mono">
-                Supported formats: .pdf, .docx
+              <p className="text-sm text-textMuted">
+                Supported formats: PDF, DOCX
               </p>
             </div>
 
-            <span className="text-primary text-sm font-mono hover:underline mt-2">
-              &gt; Browse Files
+            <span className="text-primary text-sm font-medium hover:underline mt-2">
+              Browse Files
             </span>
           </div>
         ) : (
@@ -236,7 +236,7 @@ export const DragAndDropZone = () => {
                 {file.name}
                 <CheckCircle className="w-4 h-4 text-secondary" />
               </p>
-              <p className="text-sm text-textMuted font-mono">
+              <p className="text-sm text-textMuted">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
               </p>
             </div>
@@ -247,9 +247,9 @@ export const DragAndDropZone = () => {
                   e.stopPropagation();
                   setFile(null);
                 }}
-                className="text-danger text-sm font-mono hover:underline mt-2"
+                className="text-danger text-sm hover:underline mt-2"
               >
-                [ Remove ]
+                Remove
               </button>
             )}
           </div>
@@ -262,7 +262,7 @@ export const DragAndDropZone = () => {
           animate={{ opacity: 1, y: 0 }}
           className="
             mb-6 flex items-center gap-2 text-danger text-sm
-            bg-danger/10 border border-danger/20 p-3 rounded-md font-mono
+            bg-danger/10 border border-danger/20 p-3 rounded-md
           "
         >
           <AlertCircle className="w-4 h-4 shrink-0" />
@@ -280,10 +280,10 @@ export const DragAndDropZone = () => {
           {isUploading ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Processing Vector Analysis...
+              Analyzing Resume...
             </>
           ) : (
-            'Execute Analysis Sequence'
+            'Analyze Resume'
           )}
         </Button>
       )}

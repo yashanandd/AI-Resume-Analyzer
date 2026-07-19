@@ -41,8 +41,8 @@ export const ATSScoreRing: React.FC<ATSScoreRingProps> = ({ score }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold font-mono text-white">{score}</span>
-        <span className="text-[10px] text-textMuted uppercase tracking-wider font-mono">Score</span>
+        <span className="text-3xl font-bold text-white">{score}</span>
+        <span className="text-[10px] text-textMuted uppercase tracking-wider">Score</span>
       </div>
     </div>
   );

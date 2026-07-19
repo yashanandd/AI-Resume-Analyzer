@@ -95,13 +95,12 @@ export const Dashboard = () => {
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
         <header className="flex justify-between items-center pb-6 border-b border-white/10">
           <div>
-            <h1 className="text-3xl font-bold font-mono tracking-tight text-white mb-2">Nexus <span className="text-primary">Dashboard</span></h1>
-            <p className="text-textMuted text-sm font-mono">[ system.status: online ]</p>
+            <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Nexus <span className="text-primary">Dashboard</span></h1>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-sm font-medium text-white">{user?.full_name || 'Authorized User'}</p>
-              <p className="text-xs text-textMuted font-mono">user_id: {user?.id || 'unknown'}</p>
+              <p className="text-xs text-textMuted">User ID: {user?.id || 'unknown'}</p>
             </div>
             <button 
               onClick={() => {
@@ -125,19 +124,19 @@ export const Dashboard = () => {
         </header>
 
         {isLoading ? (
-          <div className="flex justify-center items-center py-20 text-primary font-mono animate-pulse">
+          <div className="flex justify-center items-center py-20 text-primary animate-pulse">
             Loading metrics...
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="hover:border-primary/45 hover:-translate-y-0.5 transition-all duration-300">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm text-textMuted">Analyses Run</CardTitle>
+                <CardTitle className="text-sm text-textMuted">Resumes Analyzed</CardTitle>
                 <Activity className="w-4 h-4 text-primary" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold font-mono">{analysesCount}</div>
-                <p className="text-xs text-secondary mt-1">Total vectors processed</p>
+                <div className="text-2xl font-bold">{analysesCount}</div>
+                <p className="text-xs text-secondary mt-1">Total resumes uploaded</p>
               </CardContent>
             </Card>
             <Card className="hover:border-accent/45 hover:-translate-y-0.5 transition-all duration-300">
@@ -146,18 +145,18 @@ export const Dashboard = () => {
                 <Target className="w-4 h-4 text-accent" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold font-mono">{avgAtsScore}%</div>
-                <p className="text-xs text-secondary mt-1">Overall compatibility</p>
+                <div className="text-2xl font-bold">{avgAtsScore}%</div>
+                <p className="text-xs text-secondary mt-1">Average compatibility score</p>
               </CardContent>
             </Card>
             <Card className="hover:border-secondary/45 hover:-translate-y-0.5 transition-all duration-300">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm text-textMuted">Latest Report</CardTitle>
+                <CardTitle className="text-sm text-textMuted">Latest Analysis</CardTitle>
                 <FileText className="w-4 h-4 text-secondary" />
               </CardHeader>
               <CardContent>
                 <div className="text-xl font-bold text-sm truncate">{latestReport}</div>
-                <p className="text-xs text-textMuted mt-1 font-mono">Most recent file</p>
+                <p className="text-xs text-textMuted mt-1">Most recent upload</p>
               </CardContent>
             </Card>
           </div>
@@ -172,8 +171,8 @@ export const Dashboard = () => {
             {/* Upload Zone (Left Column) */}
             <div className="lg:col-span-7 space-y-6">
               <div className="mb-4">
-                <h2 className="text-xl font-bold font-mono text-white mb-2">&gt; Initialize New Analysis</h2>
-                <p className="text-textMuted text-sm">Upload a new document vector to run the ATS and Skill extraction models.</p>
+                <h2 className="text-xl font-bold text-white mb-2">Analyze a New Resume</h2>
+                <p className="text-textMuted text-sm">Upload your resume in PDF or DOCX format to compare it against a target job role.</p>
               </div>
               <DragAndDropZone />
             </div>
@@ -181,15 +180,15 @@ export const Dashboard = () => {
             {/* Analysis History Log (Right Column) */}
             <div className="lg:col-span-5 space-y-6">
               <div className="mb-4">
-                <h2 className="text-xl font-bold font-mono text-white mb-2">&gt; Vector History Log</h2>
-                <p className="text-textMuted text-sm">Previous profile iterations parsed on the Nexus server.</p>
+                <h2 className="text-xl font-bold text-white mb-2">Analysis History</h2>
+                <p className="text-textMuted text-sm">Your previously analyzed resumes and scores.</p>
               </div>
               
               <Card className="glass-panel max-h-[480px] overflow-y-auto">
                 <CardContent className="p-4 space-y-3">
                   {resumes.length === 0 ? (
-                    <div className="py-12 text-center text-textMuted font-mono text-sm border border-dashed border-white/10 rounded-lg">
-                      [ No data logs found ]
+                    <div className="py-12 text-center text-textMuted text-sm border border-dashed border-white/10 rounded-lg">
+                      No resumes analyzed yet
                     </div>
                   ) : (
                     resumes.map((resume) => {
@@ -208,10 +207,10 @@ export const Dashboard = () => {
                               <FileText className="w-4 h-4 text-primary" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <h4 className="text-sm font-semibold text-white truncate font-mono" title={resume.filename}>
+                              <h4 className="text-sm font-semibold text-white truncate" title={resume.filename}>
                                 {resume.filename}
                               </h4>
-                              <div className="flex items-center gap-2 mt-1 text-[10px] text-textMuted font-mono">
+                              <div className="flex items-center gap-2 mt-1 text-[10px] text-textMuted">
                                 <Calendar className="w-3.5 h-3.5" />
                                 <span>{new Date(resume.created_at).toLocaleDateString()}</span>
                               </div>
@@ -219,7 +218,7 @@ export const Dashboard = () => {
                           </div>
 
                           <div className="flex items-center gap-3 ml-4 shrink-0">
-                            <span className={`px-2 py-0.5 border text-xs font-bold font-mono rounded ${badgeColor}`}>
+                            <span className={`px-2 py-0.5 border text-xs font-bold rounded ${badgeColor}`}>
                               {score}%
                             </span>
                             <button
@@ -259,7 +258,7 @@ export const Dashboard = () => {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-md bg-surface/90 border border-white/10 rounded-xl p-6 shadow-2xl z-10 overflow-hidden font-mono text-xs"
+              className="relative w-full max-w-md bg-surface/90 border border-white/10 rounded-xl p-6 shadow-2xl z-10 overflow-hidden text-sm"
             >
               {/* Premium top gradient border */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary to-accent" />
@@ -276,36 +275,36 @@ export const Dashboard = () => {
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <UserIcon className="w-4 h-4 text-primary" />
-                    [ USER_PROFILE_PARAMETERS ]
+                    Profile Settings
                   </h3>
-                  <p className="text-[10px] text-textMuted mt-1">Review active vector identity values.</p>
+                  <p className="text-xs text-textMuted mt-1">Manage your account details and settings.</p>
                 </div>
 
                 {/* Identity Read-only fields */}
-                <div className="p-4 rounded-lg bg-background/50 border border-white/5 space-y-3">
+                <div className="p-4 rounded-lg bg-background/50 border border-white/5 space-y-3 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-textMuted">FULLNAME_KEY:</span>
+                    <span className="text-textMuted">Name:</span>
                     <span className="text-white font-semibold">{user?.full_name || 'N/A'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-textMuted">EMAIL_VECTOR:</span>
+                    <span className="text-textMuted">Email:</span>
                     <span className="text-white font-semibold">{user?.email || 'N/A'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-textMuted">SYSTEM_ID:</span>
+                    <span className="text-textMuted">User ID:</span>
                     <span className="text-white font-semibold">{user?.id || 'N/A'}</span>
                   </div>
                 </div>
 
                 <div className="border-t border-white/5 pt-4">
-                  <h4 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
                     <Key className="w-4 h-4 text-accent" />
-                    Modify Security Key
+                    Change Password
                   </h4>
 
                   <form onSubmit={handlePasswordChange} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="currentPassword">CURRENT_PASSWORD_HASH</Label>
+                      <Label htmlFor="currentPassword">Current Password</Label>
                       <Input
                         id="currentPassword"
                         type="password"
@@ -317,7 +316,7 @@ export const Dashboard = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="newPassword">NEW_PASSWORD_VECTOR</Label>
+                      <Label htmlFor="newPassword">New Password</Label>
                       <Input
                         id="newPassword"
                         type="password"
@@ -329,7 +328,7 @@ export const Dashboard = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="confirmPassword">CONFIRM_NEW_PASSWORD</Label>
+                      <Label htmlFor="confirmPassword">Confirm New Password</Label>
                       <Input
                         id="confirmPassword"
                         type="password"
@@ -341,14 +340,14 @@ export const Dashboard = () => {
                     </div>
 
                     {profileError && (
-                      <div className="p-3 text-[10px] font-mono rounded bg-danger/10 border border-danger/20 text-danger animate-shake">
-                        [ERROR] {profileError}
+                      <div className="p-3 text-xs rounded bg-danger/10 border border-danger/20 text-danger animate-shake">
+                        Error: {profileError}
                       </div>
                     )}
 
                     {profileSuccess && (
-                      <div className="p-3 text-[10px] font-mono rounded bg-secondary/10 border border-secondary/20 text-secondary">
-                        [SUCCESS] {profileSuccess}
+                      <div className="p-3 text-xs rounded bg-secondary/10 border border-secondary/20 text-secondary">
+                        Success: {profileSuccess}
                       </div>
                     )}
 
@@ -365,7 +364,7 @@ export const Dashboard = () => {
                         variant="primary"
                         isLoading={isUpdating}
                       >
-                        Commit Changes
+                        Save Changes
                       </Button>
                     </div>
                   </form>
