@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8 # 8 days
     
     # Database
-    SQLALCHEMY_DATABASE_URI: str = "sqlite:///./nexus_ai.db"
+    SQLALCHEMY_DATABASE_URI: str = f"sqlite:///{os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'nexus_ai.db')}"
     
     # Groq Settings
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")

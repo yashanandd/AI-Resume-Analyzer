@@ -73,7 +73,7 @@ export const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/auth');
   };
 
   const handleViewResume = (resume: Resume) => {

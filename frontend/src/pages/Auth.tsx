@@ -6,7 +6,7 @@ import { Input, Label } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
 import { authService } from '../services/authService';
 import { useAuthStore } from '../store/authStore';
-import { Mail, Lock, User, Terminal, Cpu, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, User, Terminal, Cpu } from 'lucide-react';
 
 export const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,13 +15,6 @@ export const Auth = () => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
-  // Forgot Password / OTP States
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [resetStep, setResetStep] = useState<1 | 2>(1);
-  const [otpCode, setOtpCode] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
   const setToken = useAuthStore(state => state.setToken);
@@ -29,50 +22,19 @@ export const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setSuccessMessage('');
     setIsLoading(true);
 
     try {
-      if (isForgotPassword) {
-        if (resetStep === 1) {
-          const res = await authService.forgotPassword(email);
-          setSuccessMessage(res.message || 'OTP sent successfully.');
-          setResetStep(2);
-        } else {
-          if (password !== confirmPassword) {
-            setError('Passwords do not match.');
-            setIsLoading(false);
-            return;
-          }
-          if (password.length < 6) {
-            setError('New password must be at least 6 characters long.');
-            setIsLoading(false);
-            return;
-          }
-          const res = await authService.verifyOTP(email, otpCode, password);
-          setSuccessMessage(res.message || 'Password reset successfully.');
-          setTimeout(() => {
-            setIsForgotPassword(false);
-            setIsLogin(true);
-            setResetStep(1);
-            setPassword('');
-            setConfirmPassword('');
-            setOtpCode('');
-            setSuccessMessage('');
-          }, 3000);
-        }
+      if (isLogin) {
+        const data = await authService.login(email, password);
+        setToken(data.access_token);
+        navigate('/dashboard');
       } else {
-        if (isLogin) {
-          const data = await authService.login(email, password);
-          setToken(data.access_token);
-          navigate('/dashboard');
-        } else {
-          await authService.signup(email, password, name);
-          // After signup, log them in automatically
-          const data = await authService.login(email, password);
-          setToken(data.access_token);
-          navigate('/dashboard');
-        }
+        await authService.signup(email, password, name);
+        // After signup, log them in automatically
+        const data = await authService.login(email, password);
+        setToken(data.access_token);
+        navigate('/dashboard');
       }
     } catch (err: any) {
       setError(err.response?.data?.detail || 'An error occurred. Please verify parameters.');
@@ -139,14 +101,10 @@ export const Auth = () => {
             <CardHeader className="text-center pb-2">
               <CardTitle className="text-2xl gradient-text mb-2 flex items-center justify-center gap-2">
                 <Cpu className="w-5 h-5 text-accent shrink-0" />
-                {isForgotPassword 
-                  ? (resetStep === 1 ? 'Reset_Identity_Key' : 'Verify_Security_Vector') 
-                  : (isLogin ? 'Initialize_Session' : 'Create_Identity')}
+                {isLogin ? 'Initialize_Session' : 'Create_Identity'}
               </CardTitle>
               <p className="text-xs text-textMuted font-mono">
-                {isForgotPassword 
-                  ? (resetStep === 1 ? 'Request recovery OTP parameter' : 'Inject new verification key code') 
-                  : (isLogin ? 'Authenticate to access the Nexus' : 'Register your parameters')}
+                {isLogin ? 'Authenticate to access the Nexus' : 'Register your parameters'}
               </p>
             </CardHeader>
             <CardContent className="pt-4">
@@ -155,199 +113,71 @@ export const Auth = () => {
                   [!] ERROR: {error}
                 </div>
               )}
-              {successMessage && (
-                <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded text-secondary text-xs font-mono flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" />
-                  <span>[OK] {successMessage}</span>
-                </div>
-              )}
               <form className="space-y-4" onSubmit={handleSubmit}>
-                {isForgotPassword ? (
-                  resetStep === 1 ? (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email Vector</Label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                          <Input 
-                            id="email" 
-                            type="email" 
-                            placeholder="user@domain.com" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="pl-10"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <Button className="w-full mt-6" size="lg" disabled={isLoading}>
-                        {isLoading ? 'Sending OTP...' : 'Request Access OTP'}
-                      </Button>
+                {!isLogin && (
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
+                      <Input 
+                        id="name" 
+                        placeholder="Enter your designation" 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="pl-10"
+                        required={!isLogin}
+                      />
                     </div>
-                  ) : (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email Vector</Label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                          <Input 
-                            id="email" 
-                            type="email" 
-                            value={email}
-                            disabled
-                            className="pl-10 opacity-70"
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="otp">Verification Code (OTP)</Label>
-                        <div className="relative">
-                          <Cpu className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                          <Input 
-                            id="otp" 
-                            type="text" 
-                            placeholder="6-digit code" 
-                            value={otpCode}
-                            onChange={(e) => setOtpCode(e.target.value)}
-                            className="pl-10"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="password">New Security Key</Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                          <Input 
-                            id="password" 
-                            type="password" 
-                            placeholder="Min. 6 characters" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="pl-10"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">Confirm New Security Key</Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                          <Input 
-                            id="confirmPassword" 
-                            type="password" 
-                            placeholder="••••••••" 
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="pl-10"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <Button className="w-full mt-6" size="lg" disabled={isLoading}>
-                        {isLoading ? 'Resetting password...' : 'Verify & Reset Security Key'}
-                      </Button>
-                    </div>
-                  )
-                ) : (
-                  <>
-                    {!isLogin && (
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Full Name</Label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                          <Input 
-                            id="name" 
-                            placeholder="Enter your designation" 
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="pl-10"
-                            required={!isLogin}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email Vector</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                        <Input 
-                          id="email" 
-                          type="email" 
-                          placeholder="user@domain.com" 
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="pl-10"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <Label htmlFor="password">Security Key</Label>
-                        {isLogin && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setIsForgotPassword(true);
-                              setResetStep(1);
-                              setError('');
-                              setSuccessMessage('');
-                            }}
-                            className="text-[10px] text-primary hover:text-primary/80 transition-colors font-mono"
-                          >
-                            Forgot key?
-                          </button>
-                        )}
-                      </div>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
-                        <Input 
-                          id="password" 
-                          type="password" 
-                          placeholder="••••••••" 
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="pl-10"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <Button className="w-full mt-6" size="lg" disabled={isLoading}>
-                      {isLoading ? 'Processing...' : (isLogin ? 'Execute Login' : 'Execute Registration')}
-                    </Button>
-                  </>
+                  </div>
                 )}
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email Vector</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="user@domain.com" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-10"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label htmlFor="password">Security Key</Label>
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 w-4 h-4 text-textMuted" />
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      placeholder="••••••••" 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="pl-10"
+                      required
+                    />
+                  </div>
+                </div>
+                <Button className="w-full mt-6" size="lg" disabled={isLoading}>
+                  {isLoading ? 'Processing...' : (isLogin ? 'Execute Login' : 'Execute Registration')}
+                </Button>
               </form>
               
               <div className="mt-6 text-center">
-                {isForgotPassword ? (
-                  <button 
-                    type="button"
-                    onClick={() => {
-                      setIsForgotPassword(false);
-                      setResetStep(1);
-                      setError('');
-                      setSuccessMessage('');
-                    }}
-                    className="text-xs text-textMuted hover:text-white transition-colors font-mono flex items-center justify-center gap-1.5 mx-auto"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5 font-bold" />
-                    <span>&gt; Back to Authenticate</span>
-                  </button>
-                ) : (
-                  <button 
-                    type="button"
-                    onClick={() => {
-                      setIsLogin(!isLogin);
-                      setError('');
-                      setSuccessMessage('');
-                    }}
-                    className="text-xs text-textMuted hover:text-white transition-colors font-mono"
-                  >
-                    {isLogin ? '> No identity found? Register' : '> Identity exists? Authenticate'}
-                  </button>
-                )}
+                <button 
+                  type="button"
+                  onClick={() => {
+                    setIsLogin(!isLogin);
+                    setError('');
+                  }}
+                  className="text-xs text-textMuted hover:text-white transition-colors font-mono"
+                >
+                  {isLogin ? '> No identity found? Register' : '> Identity exists? Authenticate'}
+                </button>
               </div>
             </CardContent>
           </Card>
